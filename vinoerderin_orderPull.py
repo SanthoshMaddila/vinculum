@@ -8,7 +8,6 @@ from datetime import datetime
 from datetime import timedelta
 import os
 import shutil
-import writeOrdersToFile
 import ast
 
 url = "https://duroflex.vineretail.com/RestWS/api/eretail/v2/order/status"
@@ -21,6 +20,7 @@ dat = input("Enter Start time: format -> DD/MM/YYYY HH:MM:SS (Press enter to ass
 start = ""
 end = ""
 retrievedOP = ""
+
 
 def pullOrderDetails(): 
     print("Doing stuff...")
@@ -63,7 +63,7 @@ def pullOrderDetails():
         file1.close()'''
       createOrderRecrd(retrievedOP)
            
-      time.sleep(1800)
+      time.sleep(10)
 
       if start+timedelta(hours=1) == datetime.now():
         start = end
@@ -71,8 +71,10 @@ def pullOrderDetails():
 def createOrderRecrd(str):
     dir = 'vinorderin'
     if os.path.exists(dir):
-        shutil.rmtree(dir)
-    os.makedirs(dir)
+        #shutil.rmtree(dir)
+        print ("Directory exists and files are being written")
+    else:
+      os.makedirs(dir)
 
     # Opening JSON file
     #f = open('sample.json',)
@@ -87,13 +89,13 @@ def createOrderRecrd(str):
     else:
         print ("Records found for the given time period")
         print ("Records written to vinorderin")
+
+        excelCounter = 0
         for i in data['order']:
             delimiter = " | "
             headers = ['order_no','eretailOrderNo','masterOrderNo','status','grandtotal','createAtStoreDate','shippingaddress','mobileno','sku','order_qty','internalLineNo','price','weight']
             values = []
             
-
-
             with open("vinorderin/{}.txt".format(i['order_no']), "w") as f:
                 f.write("|".join(headers))
                 f.write("\n")
@@ -107,10 +109,10 @@ def createOrderRecrd(str):
                         values.append(j['weight'])
                         f.write("|".join(values))
                         f.write("\n")
-                
-                f.close()
-      
 
+                                        
+                f.close()
+            
             
 pullOrderDetails()
 
