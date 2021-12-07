@@ -96,7 +96,7 @@ def createOrderRecrd(str):
             headers = ['order_no','eretailOrderNo','masterOrderNo','status','grandtotal','createAtStoreDate','shippingaddress','mobileno','sku','order_qty','internalLineNo','price','weight']
             values = []
             
-            with open("vinorderin/{}.txt".format(i['order_no']), "w") as f:
+            with open("vinorderin/{}.txt".format(i['eretailOrderNo']), "w") as f:
                 f.write("|".join(headers))
                 f.write("\n")
                 for j in i['shipdetail']:
